@@ -19,3 +19,10 @@ Hint: You may want to use your DTD from the previous question as a starting poin
 ```bash
 xmllint --valid --noout courses-ID.xml
 ```
+
+# Q3
+In this question, you are to create a DTD for a small XML data set about world countries. This data is adapted from the Mondial 3.0 database as hosted by [the University of Washington](http://www.cs.washington.edu/research/xmldatasets/www/repository.html#mondial), and was originally compiled by the Georg-August University of [Goettingen Institute for Informatics](http://www.dbis.informatik.uni-goettingen.de/Mondial/). Each country has a name, population, and area (in sq. km). Some countries also list languages (with percentages of the population that speaks each language) and/or cities (with names and populations). The XML data is [here](https://prod-c2g.s3.amazonaws.com/db/Winter2013/files/countries.xml).
+
+```bash
+xmllint --valid --noout countries.xml
+```
