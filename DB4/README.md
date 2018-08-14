@@ -58,3 +58,28 @@ Find all pizzas that are eaten only by people younger than 24, or that cost less
 ```
 (\project_{pizza} (\select_{age < 24} (Person \join Eats)) \diff \project_{pizza} (\select_{age >= 24} (Person \join Eats))) \union (\project_{pizza} (\select_{price < 10} Serves) \diff \project_{pizza} (\select_{price >= 10} Serves));
 ```
+
+## Q7
+
+Find the age of the oldest person (or people) who eat mushroom pizza.
+
+[Suggestion](https://lagunita.stanford.edu/courses/DB/RA/SelfPaced/discussion/forum/i4x-Engineering-db4-SelfPaced-general/threads/53a3fa3b4eaf34a753000038)
+
+```
+(\project_{age} (\select_{pizza='mushroom'} (Eats \join Person))) \diff (
+    \project_{age1} (
+        \select_{age1 < age2} ((
+            \rename_{age1} (
+                \project_{age} (
+                    \select_{pizza='mushroom'} (Eats \join Person)
+                )
+            )) \cross (
+                \rename_{age2} (
+                \project_{age} (
+                    \select_{pizza='mushroom'} (Eats \join Person)
+                )
+            ))           
+        )
+    )
+);
+```
