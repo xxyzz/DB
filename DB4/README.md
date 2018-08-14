@@ -50,3 +50,11 @@ Find the names of all people who eat at least one pizza served by Dominos but wh
 ```
 (\project_{name} \select_{pizzeria='Dominos'} (Eats \join Serves)) \diff (\project_{name} (\select_{pizzeria='Dominos'} Frequents));
 ```
+
+## Q6
+
+Find all pizzas that are eaten only by people younger than 24, or that cost less than $10 everywhere they're served.
+
+```
+(\project_{pizza} (\select_{age < 24} (Person \join Eats)) \diff \project_{pizza} (\select_{age >= 24} (Person \join Eats))) \union (\project_{pizza} (\select_{price < 10} Serves) \diff \project_{pizza} (\select_{price >= 10} Serves));
+```
