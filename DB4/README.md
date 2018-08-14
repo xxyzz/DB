@@ -56,7 +56,7 @@ Find the names of all people who eat at least one pizza served by Dominos but wh
 Find all pizzas that are eaten only by people younger than 24, or that cost less than $10 everywhere they're served.
 
 ```
-(\project_{pizza} (\select_{age < 24} (Person \join Eats)) \diff \project_{pizza} (\select_{age >= 24} (Person \join Eats))) \union (\project_{pizza} (\select_{price < 10} Serves) \diff \project_{pizza} (\select_{price >= 10} Serves));
+((\project_{pizza} Eats) \diff \project_{pizza} (\select_{age >= 24} (Person \join Eats))) \union ((\project_{pizza} Serves) \diff \project_{pizza} (\select_{price >= 10} Serves));
 ```
 
 ## Q7
@@ -80,6 +80,42 @@ Find the age of the oldest person (or people) who eat mushroom pizza.
                 )
             ))           
         )
+    )
+);
+```
+
+## Q8
+
+Find all pizzerias that serve **ONLY** pizzas eaten by people over 30.
+
+This works in exercises page:
+```
+(\project_{pizzeria} Serves) \diff (
+    \project_{pizzeria} (
+        (\project_{pizza} Eats) \diff (
+            \project_{pizza} (
+                \select_{age > 30} (
+                    Person \join Eats
+                )
+            )
+        ) \join Serves
+    )
+);
+```
+
+This works in latest version of RA:
+```
+(\project_{pizzeria} Serves) \diff (
+    \project_{pizzeria} (
+        \rename_{under} (
+            (\project_{pizza} Eats) \diff (
+                \project_{pizza} (
+                    \select_{age > 30} (
+                        Person \join Eats
+                    )
+                )
+            )
+        ) \join_{under = Serves.pizza} Serves
     )
 );
 ```
