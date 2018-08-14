@@ -42,3 +42,11 @@ Find all pizzerias that serve at least one pizza for less than $10 that both Amy
 ```
 (\project_{pizzeria} (\select_{price < 10 and name='Amy'} (Serves \join Eats)) \intersect (\project_{pizzeria} (\select_{price < 10 and name='Fay'} (Serves \join Eats))));
 ```
+
+## Q5
+
+Find the names of all people who eat at least one pizza served by Dominos but who do not frequent Dominos.
+
+```
+(\project_{name} \select_{pizzeria='Dominos'} (Eats \join Serves)) \diff (\project_{name} (\select_{pizzeria='Dominos'} Frequents));
+```
