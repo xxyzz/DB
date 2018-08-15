@@ -119,3 +119,39 @@ This works in latest version of RA:
     )
 );
 ```
+
+## Q9
+
+Find all pizzerias that serve **EVERY** pizza eaten by people over 30.
+
+[Relational algebra Division (÷)](https://en.wikipedia.org/wiki/Relational_algebra#Division_(%C3%B7))
+
+```
+(\project_{pizzeria} (
+    Serves \join (
+        \project_{pizza} (
+            \select_{age > 30} (
+                Person \join Eats
+            )
+        )
+    )
+)) \diff (
+    \project_{pizzeria} (
+        (\project_{pizzeria} (
+            Serves \join (
+                \project_{pizza} (
+                    \select_{age > 30} (
+                        Person \join Eats
+                    )
+                )
+            )
+        ) \cross (
+            \project_{pizza} (
+                \select_{age > 30} (
+                    Person \join Eats
+                )
+            )
+        )) \diff (\project_{pizzeria, pizza} Serves)
+    )
+);
+```
