@@ -33,3 +33,16 @@ FROM Movie JOIN Rating USING(mID)
 WHERE stars = 4 OR stars = 5
 ORDER BY year;
 ```
+
+## Q3
+
+Find the titles of all movies that have no ratings.
+
+```sql
+SELECT title
+FROM Movie
+WHERE mID NOT IN (
+    SELECT mID
+    FROM RATING
+);
+```
