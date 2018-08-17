@@ -4,5 +4,6 @@ Bookstore-noDTD.xml
 Bookstore.xsd
 Bookstore-XSD.xml
 pizza.sql
+rating.sql
 sample*
 .DS_Store
