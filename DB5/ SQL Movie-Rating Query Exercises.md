@@ -17,8 +17,19 @@ Your queries will run over a small data set conforming to the schema. [View the 
 
 Find the titles of all movies directed by Steven Spielberg.
 
-```
+```sql
 SELECT title
 FROM Movie
 WHERE director = 'Steven Spielberg';
+```
+
+## Q2
+
+Find all years that have a movie that received a rating of 4 or 5, and sort them in increasing order.
+
+```sql
+SELECT DISTINCT year
+FROM Movie JOIN Rating USING(mID)
+WHERE stars = 4 OR stars = 5
+ORDER BY year;
 ```
