@@ -77,3 +77,14 @@ FROM (Rating R1 JOIN Reviewer USING(rID)) LEFT OUTER JOIN Movie USING(mID)
 WHERE rID IN (SELECT rID FROM Reviewer JOIN Rating R2 USING(rID)
               WHERE R1.rID = R2.rID AND R1.mID = R2.mID AND R1.stars < R2.stars AND R1.ratingDate < R2.ratingDate);
 ```
+
+## Q7
+
+For each movie that has at least one rating, find the highest number of stars that movie received. Return the movie title and number of stars. Sort by movie title.
+
+```sql
+SELECT title, MAX(stars)
+FROM Movie JOIN Rating USING(mID)
+GROUP BY mID
+ORDER BY title;
+```
