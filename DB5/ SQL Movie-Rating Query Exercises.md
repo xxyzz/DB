@@ -161,3 +161,17 @@ UNION
 SELECT title FROM Movie
 ORDER BY name, title;
 ```
+
+## Q4
+
+Find the titles of all movies not reviewed by Chris Jackson.
+
+```sql
+SELECT title
+FROM (SELECT title FROM Movie
+      WHERE mID NOT IN (
+          SELECT mID
+          FROM Rating JOIN Reviewer USING(rID)
+          WHERE name = 'Chris Jackson'
+     ));
+```
