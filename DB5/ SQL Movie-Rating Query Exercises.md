@@ -140,3 +140,13 @@ SELECT DISTINCT name
 FROM (Rating JOIN Reviewer USING(rID)) JOIN Movie USING(mID)
 WHERE title = 'Gone with the Wind';
 ```
+
+## Q2
+
+For any rating where the reviewer is the same as the director of the movie, return the reviewer name, movie title, and number of stars.
+
+```sql
+SELECT DISTINCT name, title, stars
+FROM (Rating JOIN Reviewer USING(rID)) JOIN Movie USING(mID)
+WHERE Reviewer.name = Movie.director;
+```
