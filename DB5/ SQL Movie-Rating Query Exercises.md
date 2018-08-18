@@ -66,3 +66,14 @@ SELECT name AS 'reviewer name', title AS 'movie title', stars, ratingDate
 FROM (Rating JOIN Reviewer USING(rID)) LEFT OUTER JOIN Movie USING(mID)
 ORDER BY name, title, stars;
 ```
+
+## Q6
+
+For all cases where the same reviewer rated the same movie twice and gave it a higher rating the second time, return the reviewer's name and the title of the movie.
+
+```sql
+SELECT name, title
+FROM (Rating R1 JOIN Reviewer USING(rID)) LEFT OUTER JOIN Movie USING(mID)
+WHERE rID IN (SELECT rID FROM Reviewer JOIN Rating R2 USING(rID)
+              WHERE R1.rID = R2.rID AND R1.mID = R2.mID AND R1.stars < R2.stars AND R1.ratingDate < R2.ratingDate);
+```
