@@ -175,3 +175,18 @@ FROM (SELECT title FROM Movie
           WHERE name = 'Chris Jackson'
      ));
 ```
+
+## Q5
+
+For all pairs of reviewers such that both reviewers gave a rating to the same movie, return the names of both reviewers. Eliminate duplicates, don't pair reviewers with themselves, and include each pair only once. For each pair, return the names in the pair in alphabetical order.
+
+```sql
+SELECT DISTINCT *
+FROM (
+    SELECT R1.name AS R1, R2.name AS R2
+    FROM (Reviewer JOIN Rating USING(rID)) AS R1, (Reviewer JOIN Rating USING(rID)) AS R2
+    WHERE R1.rID <> R2.rID AND R1.mID = R2.mID
+)
+WHERE R1 < R2
+ORDER BY R1;
+```
