@@ -13,6 +13,11 @@ English: The reviewer rID gave the movie mID a number of stars rating (1-5) on a
 
 Your queries will run over a small data set conforming to the schema. [View the database](https://lagunita.stanford.edu/c4x/DB/SQL/asset/moviedata.html). (You can also [download the schema and data](https://s3-us-west-2.amazonaws.com/prod-c2g/db/Winter2013/files/rating.sql).)
 
+```
+$ sqlite3
+sqlite> .read rating.sql
+```
+
 ## Q1
 
 Find the titles of all movies directed by Steven Spielberg.
@@ -98,4 +103,28 @@ SELECT title, (MAX(stars) - MIN(stars)) AS spread
 FROM Movie JOIN Rating USING(mID)
 GROUP BY mID
 ORDER BY spread DESC, title;
+```
+
+## Q9
+
+Find the difference between the average rating of movies released before 1980 and the average rating of movies released after 1980. (Make sure to calculate the average rating for each movie, then the average of those averages for movies before 1980 and movies after. Don't just calculate the overall average rating before and after 1980.)
+
+```sql
+SELECT avg1 - avg2
+FROM (
+    (SELECT AVG(eachAvgBefore) AS avg1
+    FROM (
+    SELECT AVG(stars) AS eachAvgBefore
+    FROM (SELECT *
+        FROM Rating JOIN Movie USING(mID)
+        WHERE year < 1980)
+    GROUP BY mID)),
+
+    (SELECT AVG(eachAvgAfter) AS avg2
+    FROM (
+    SELECT AVG(stars) AS eachAvgAfter
+    FROM (SELECT *
+        FROM Rating JOIN Movie USING(mID)
+        WHERE year > 1980)
+    GROUP BY mID)));
 ```
