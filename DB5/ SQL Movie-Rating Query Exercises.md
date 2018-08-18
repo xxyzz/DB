@@ -56,3 +56,13 @@ SELECT name
 FROM Reviewer JOIN Rating USING(rID)
 WHERE ratingDate IS NULL;
 ```
+
+## Q5
+
+Write a query to return the ratings data in a more readable format: reviewer name, movie title, stars, and ratingDate. Also, sort the data, first by reviewer name, then by movie title, and lastly by number of stars.
+
+```sql
+SELECT name AS 'reviewer name', title AS 'movie title', stars, ratingDate 
+FROM (Rating JOIN Reviewer USING(rID)) LEFT OUTER JOIN Movie USING(mID)
+ORDER BY name, title, stars;
+```
