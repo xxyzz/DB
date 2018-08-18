@@ -1,4 +1,4 @@
-#  SQL Movie-Rating Query Exercises
+# SQL Movie-Rating Query Exercises
 
 You've started a new movie-rating website, and you've been collecting data on reviewers' ratings of various movies. There's not much data yet, but you can still try out some interesting queries. Here's the schema:
 
@@ -127,4 +127,16 @@ FROM (
         FROM Rating JOIN Movie USING(mID)
         WHERE year > 1980)
     GROUP BY mID)));
+```
+
+# SQL Movie-Rating Query Exercises Extras
+
+## Q1
+
+Find the names of all reviewers who rated Gone with the Wind.
+
+```sql
+SELECT DISTINCT name
+FROM (Rating JOIN Reviewer USING(rID)) JOIN Movie USING(mID)
+WHERE title = 'Gone with the Wind';
 ```
