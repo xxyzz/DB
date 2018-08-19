@@ -211,3 +211,24 @@ FROM (SELECT * FROM Rating JOIN Movie USING(mID))
 GROUP BY mID
 ORDER BY eachAVG DESC, title;
 ```
+
+## Q8
+
+Find the names of all reviewers who have contributed three or more ratings. (As an extra challenge, try writing the query without HAVING or without COUNT.)
+
+```sql
+SELECT name
+FROM Rating JOIN Reviewer USING(rID)
+GROUP BY rID
+HAVING COUNT(*) >= 3;
+```
+
+```sql
+SELECT name
+FROM Reviewer
+WHERE (SELECT COUNT(*) FROM Rating WHERE Reviewer.rID = Rating.rID) >= 3;
+
+SELECT name
+FROM Reviewer
+WHERE (SELECT COUNT(DISTINCT mID) FROM Rating WHERE Reviewer.rID = Rating.rID) >= 3;
+```
