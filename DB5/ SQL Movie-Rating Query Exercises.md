@@ -263,3 +263,29 @@ WHERE avgRating = (SELECT MAX(avgRating)
                          FROM Movie JOIN Rating USING(mID)
                          GROUP BY mID));
 ```
+
+## Q11
+
+Find the movie(s) with the lowest average rating. Return the movie title(s) and average rating. (Hint: This query may be more difficult to write in SQLite than other systems; you might think of it as finding the lowest average rating and then choosing the movie(s) with that average rating.)
+
+```sql
+SELECT title, avgRating
+FROM (SELECT title, AVG(stars) AS avgRating
+      FROM Movie JOIN Rating USING(mID)
+      GROUP BY mID)
+WHERE avgRating = (SELECT MIN(avgRating)
+                   FROM (SELECT AVG(stars) AS avgRating
+                         FROM Movie JOIN Rating USING(mID)
+                         GROUP BY mID));
+```
+
+## Q12
+
+For each director, return the director's name together with the title(s) of the movie(s) they directed that received the highest rating among all of their movies, and the value of that rating. Ignore movies whose director is NULL.
+
+```sql
+SELECT director, title, MAX(stars)
+FROM Movie JOIN Rating USING(mID)
+WHERE director IS NOT NULL
+GROUP BY director
+```
