@@ -232,3 +232,19 @@ SELECT name
 FROM Reviewer
 WHERE (SELECT COUNT(DISTINCT mID) FROM Rating WHERE Reviewer.rID = Rating.rID) >= 3;
 ```
+
+## Q9
+
+Some directors directed more than one movie. For all such directors, return the titles of all movies directed by them, along with the director name. Sort by director name, then movie title. (As an extra challenge, try writing the query both with and without COUNT.)
+
+```sql
+SELECT M1.title, M1.director
+FROM Movie M1, Movie M2
+WHERE M1.director = M2.director AND M1.mId <> M2.mID
+ORDER BY M1.director, M1.title;
+
+SELECT title, director
+FROM Movie M1
+WHERE (SELECT COUNT(*) FROM Movie M2 WHERE M1.director = M2.director) >1
+ORDER BY director, title;
+```
