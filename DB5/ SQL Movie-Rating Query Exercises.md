@@ -200,3 +200,14 @@ SELECT name, title, stars
 FROM (Rating JOIN Reviewer USING(rID)) JOIN Movie USING(mID)
 WHERE stars = (SELECT MIN(stars) FROM Rating);
 ```
+
+## Q7
+
+List movie titles and average ratings, from highest-rated to lowest-rated. If two or more movies have the same average rating, list them in alphabetical order.
+
+```sql
+SELECT title, AVG(stars) AS eachAvg
+FROM (SELECT * FROM Rating JOIN Movie USING(mID))
+GROUP BY mID
+ORDER BY eachAVG DESC, title;
+```
