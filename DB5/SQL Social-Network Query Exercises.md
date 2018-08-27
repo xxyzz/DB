@@ -33,3 +33,23 @@ WHERE ID IN (SELECT Friend.ID1
              FROM Highschooler JOIN Friend
              WHERE Highschooler.ID = Friend.ID2 AND Highschooler.name = 'Gabriel');
 ```
+
+## Q2
+
+For every student who likes someone 2 or more grades younger than themselves, return that student's name and grade, and the name and grade of the student they like.
+
+```sql
+SELECT S1.name, S1.grade, S2.name, S2.grade
+FROM (
+    (
+        SELECT id, name, grade
+        FROM Highschooler JOIN Likes
+        WHERE Highschooler.ID = Likes.ID1
+    ) S1 JOIN (
+        SELECT Likes.ID1 AS id, name, grade
+        FROM Highschooler JOIN Likes
+        WHERE Highschooler.ID = Likes.ID2
+    ) S2 USING(id)
+)
+WHERE s1.grade - s2.grade > 1;
+```
