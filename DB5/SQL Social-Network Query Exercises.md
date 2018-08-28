@@ -159,3 +159,27 @@ WHERE ID IN (
     WHERE L1.ID1 <> L2.ID1 AND L1.ID2 = L2.ID2
 );
 ```
+
+# SQL Social-Network Query Exercises Extras
+
+## Q1
+
+For every situation where student A likes student B, but student B likes a different student C, return the names and grades of A, B, and C.
+
+```sql
+SELECT H1.name, H1.grade, H2.name, H2.grade, H3.name, H3.grade
+FROM Highschooler H1, Highschooler H2, Highschooler H3
+WHERE H2.ID IN (
+    SELECT ID2
+    FROM Likes
+    WHERE ID1 = H1.ID
+) AND H1.ID NOT IN (
+    SELECT ID2
+    FROM Likes
+    WHERE ID1 = H2.ID
+) AND H3.ID IN (
+    SELECT ID2
+    FROM Likes
+    WHERE ID1 = H2.ID
+);
+```
