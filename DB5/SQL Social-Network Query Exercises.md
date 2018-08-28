@@ -136,3 +136,12 @@ WHERE (
                   WHERE ID1 = H2.ID) 
 );
 ```
+
+## Q8
+
+Find the difference between the number of students in the school and the number of different first names.
+
+```sql
+SELECT COUNT(ID) - COUNT(DISTINCT name)
+FROM Highschooler;
+```
