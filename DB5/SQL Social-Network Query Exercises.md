@@ -87,7 +87,7 @@ ORDER BY grade, name;
 
 ## Q5
 
- For every situation where student A likes student B, but we have no information about whom B likes (that is, B does not appear as an ID1 in the Likes table), return A and B's names and grades.
+For every situation where student A likes student B, but we have no information about whom B likes (that is, B does not appear as an ID1 in the Likes table), return A and B's names and grades.
 
  ```sql
 SELECT H1.name, H1.grade, H2.name, H2.grade
@@ -98,3 +98,18 @@ FROM Highschooler H1, Highschooler H2, (
 )
 WHERE H1.ID = ID1 AND H2.ID = ID2;
  ```
+
+## Q6
+
+Find names and grades of students who only have friends in the same grade. Return the result sorted by grade, then by name within each grade.
+
+```sql
+SELECT name, grade
+FROM Highschooler
+WHERE ID NOT IN (
+    SELECT H1.ID
+    FROM Highschooler H1, Highschooler H2, Friend
+    WHERE H1.ID = ID1 AND H2.ID = ID2 AND H1.grade <> H2.grade
+)
+ORDER BY grade, name;
+```
