@@ -113,3 +113,26 @@ WHERE ID NOT IN (
 )
 ORDER BY grade, name;
 ```
+
+## Q7
+
+For each student A who likes a student B where the two are not friends, find if they have a friend C in common (who can introduce them!). For all such trios, return the name and grade of A, B, and C.
+
+```sql
+SELECT H1.name, H1.grade, H2.name, H2.grade, H3.name, H3.grade
+FROM Highschooler H1, Highschooler H2, Highschooler H3
+WHERE (
+    H2.ID IN (SELECT ID2
+              FROM Likes
+              WHERE ID1 = H1.ID)
+    AND H2.ID NOT IN (SELECT ID2
+                      FROM Friend
+                      WHERE ID1 = H1.ID)
+    AND H3.ID IN (SELECT ID2
+                  FROM Friend
+                  WHERE ID1 = H1.ID)
+    AND H3.ID IN (SELECT ID2
+                  FROM Friend
+                  WHERE ID1 = H2.ID) 
+);
+```
