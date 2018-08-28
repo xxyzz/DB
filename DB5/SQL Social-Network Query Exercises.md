@@ -51,5 +51,19 @@ FROM (
         WHERE Highschooler.ID = Likes.ID2
     ) S2 USING(id)
 )
-WHERE s1.grade - s2.grade > 1;
+WHERE S1.grade - S2.grade > 1;
+```
+
+## Q3
+
+For every pair of students who both like each other, return the name and grade of both students. Include each pair only once, with the two names in alphabetical order.
+
+```sql
+SELECT H1.name, H1.grade, H2.name, H2.grade
+FROM Highschooler H1, Highschooler H2, (
+    SELECT L1.ID1 AS ID1, L1.ID2 AS ID2
+    FROM Likes L1 JOIN Likes L2
+    ON L1.ID1 = L2.ID2 AND L1.ID2 = L2.ID1
+) 
+WHERE H1.ID = ID1 AND H2.ID = ID2 AND H1.name < H2.name;
 ```
