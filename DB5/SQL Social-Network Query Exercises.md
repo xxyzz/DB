@@ -84,3 +84,17 @@ WHERE ID NOT IN (
 )
 ORDER BY grade, name;
 ```
+
+## Q5
+
+ For every situation where student A likes student B, but we have no information about whom B likes (that is, B does not appear as an ID1 in the Likes table), return A and B's names and grades.
+
+ ```sql
+SELECT H1.name, H1.grade, H2.name, H2.grade
+FROM Highschooler H1, Highschooler H2, (
+    SELECT ID1, ID2
+    FROM Likes
+    WHERE ID2 NOT IN (SELECT ID1 FROM Likes)
+)
+WHERE H1.ID = ID1 AND H2.ID = ID2;
+ ```
