@@ -227,3 +227,23 @@ FROM (
     WHERE H1.name = 'Cassandra' AND H1.ID = F1.ID1 AND F2.ID2 = F1.ID2 AND H2.ID = F2.ID1 AND H2.name <> 'Cassandra'
 );
 ```
+
+## Q5
+
+Find the name and grade of the student(s) with the greatest number of friends.
+
+```sql
+SELECT DISTINCT name, grade
+FROM Highschooler JOIN Friend
+WHERE ID = ID1 AND ID IN (
+    SELECT ID2
+    FROM (
+        SELECT ID2, COUNT(ID1) AS friends
+        FROM Friend
+        GROUP BY ID2
+    )
+    WHERE friends = (SELECT MAX(friends) FROM (SELECT ID2, COUNT(ID1) AS friends
+                                               FROM Friend
+                                               GROUP BY ID2))
+);
+```
