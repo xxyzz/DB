@@ -183,3 +183,17 @@ WHERE H2.ID IN (
     WHERE ID1 = H2.ID
 );
 ```
+
+## Q2
+
+Find those students for whom all of their friends are in different grades from themselves. Return the students' names and grades.
+
+```sql
+SELECT name, grade
+FROM Highschooler
+WHERE ID NOT IN (
+    SELECT H1.ID
+    FROM Highschooler H1, Highschooler H2, Friend
+    WHERE H1.ID = ID1 AND H2.ID = ID2 AND H1.grade = H2.grade
+);
+```
