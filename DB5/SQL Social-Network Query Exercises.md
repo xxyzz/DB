@@ -210,3 +210,20 @@ FROM (
     GROUP BY FRIEND.ID1
 );
 ```
+
+## Q4
+
+Find the number of students who are either friends with Cassandra or are friends of friends of Cassandra. Do not count Cassandra, even though technically she is a friend of a friend.
+
+```sql
+SELECT count1 + count2
+FROM (
+    SELECT count(ID) AS count1
+    FROM Highschooler, Friend
+    WHERE ID = ID2 AND name = 'Cassandra'
+), (
+    SELECT COUNT(H2.ID) AS count2
+    FROM Highschooler H1, Highschooler H2, Friend F1, Friend F2
+    WHERE H1.name = 'Cassandra' AND H1.ID = F1.ID1 AND F2.ID2 = F1.ID2 AND H2.ID = F2.ID1 AND H2.name <> 'Cassandra'
+);
+```
