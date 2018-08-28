@@ -67,3 +67,20 @@ FROM Highschooler H1, Highschooler H2, (
 ) 
 WHERE H1.ID = ID1 AND H2.ID = ID2 AND H1.name < H2.name;
 ```
+
+## Q4
+
+Find all students who do not appear in the Likes table (as a student who likes or is liked) and return their names and grades. Sort by grade, then by name within each grade.
+
+```sql
+SELECT name, grade
+FROM Highschooler
+WHERE ID NOT IN (
+    SELECT ID1
+    FROM Likes
+    UNION
+    SELECT ID2
+    FROM Likes
+)
+ORDER BY grade, name;
+```
