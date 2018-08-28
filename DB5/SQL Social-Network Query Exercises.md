@@ -145,3 +145,17 @@ Find the difference between the number of students in the school and the number 
 SELECT COUNT(ID) - COUNT(DISTINCT name)
 FROM Highschooler;
 ```
+
+## Q9
+
+Find the name and grade of all students who are liked by more than one other student.
+
+```sql
+SELECT name, grade
+FROM Highschooler
+WHERE ID IN (
+    SELECT L1.ID2
+    FROM Likes L1, Likes L2
+    WHERE L1.ID1 <> L2.ID1 AND L1.ID2 = L2.ID2
+);
+```
