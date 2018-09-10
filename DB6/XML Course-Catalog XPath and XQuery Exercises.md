@@ -39,3 +39,13 @@ for $d in doc("courses.xml")//Department
 where $d/Course//Prereq = "CS106B"
 return $d/Title
 ```
+
+## Q5
+
+Return last names of all professors or lecturers who use a middle initial. Don't worry about eliminating duplicates.
+
+```xquery
+for $pl in doc("courses.xml")//(Professor | Lecturer)
+where $pl[Middle_Initial]
+return $pl/Last_Name
+```
