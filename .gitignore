@@ -1,10 +1,7 @@
-Bookstore-DTD.xml
-Bookstore-IDREFs.xml
-Bookstore-noDTD.xml
-Bookstore.xsd
-Bookstore-XSD.xml
+Bookstore*
 pizza.sql
 rating.sql
 social.sql
 sample*
 .DS_Store
+courses-noID.xml
