@@ -10,3 +10,12 @@ Return all Title elements (of both departments and courses).
 for $c in doc("courses.xml")//Title
 return $c
 ```
+
+## Q2
+
+Return last names of all department chairs.
+
+```xquery
+for $l in doc("courses.xml")//Department/Chair//Last_Name
+return $l
+```
