@@ -29,3 +29,13 @@ for $c in doc("courses.xml")//Course
 where $c/@Enrollment > 500
 return $c/Title
 ```
+
+## Q4
+
+Return titles of departments that have some course that takes "CS106B" as a prerequisite.
+
+```xquery
+for $d in doc("courses.xml")//Department
+where $d/Course//Prereq = "CS106B"
+return $d/Title
+```
