@@ -49,3 +49,11 @@ for $pl in doc("courses.xml")//(Professor | Lecturer)
 where $pl[Middle_Initial]
 return $pl/Last_Name
 ```
+
+## Q6
+
+Return the count of courses that have a cross-listed course (i.e., that have "Cross-listed" in their description).
+
+```xquery
+count(doc("courses.xml")//Course[contains(Description, "Cross-listed")])
+```
