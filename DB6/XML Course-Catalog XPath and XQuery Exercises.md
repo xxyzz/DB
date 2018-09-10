@@ -19,3 +19,13 @@ Return last names of all department chairs.
 for $l in doc("courses.xml")//Department/Chair//Last_Name
 return $l
 ```
+
+## Q3
+
+Return titles of courses with enrollment greater than 500.
+
+```xquery
+for $c in doc("courses.xml")//Course
+where $c/@Enrollment > 500
+return $c/Title
+```
