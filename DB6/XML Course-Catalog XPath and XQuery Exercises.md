@@ -122,3 +122,18 @@ for $c in doc("courses.xml")//Course
 where $c/Instructors//First_Name = "Daphne" or $c/Instructors//First_Name = "Julie"
 return $c/data(@Number)
 ```
+
+## Q4
+
+Return the number (count) of courses that have no lecturers as instructors.
+
+```xquery
+count(
+    for $c in doc("courses.xml")//Course
+    return
+        if ($c/Instructors[Lecturer]) then
+            ()
+        else
+            $c
+)
+```
