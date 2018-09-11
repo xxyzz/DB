@@ -90,3 +90,15 @@ for $c in doc("courses.xml")//Course
 where $c/@Enrollment >= max(for $cc in doc("courses.xml")//Course return $cc/@Enrollment)
 return $c/Title
 ```
+
+# XML Course-Catalog XPath and XQuery Exercises Extras
+
+## Q1
+
+Return the course number of the course that is cross-listed as "LING180".
+
+```xquery
+for $c in doc("courses.xml")//Course
+where $c[contains(Description, "Cross-listed as LING180")]
+return $c/data(@Number)
+```
