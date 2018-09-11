@@ -80,3 +80,13 @@ where $c[contains(Description, "system")]
     and $c/@Enrollment > 100
 return $c//Last_Name
 ```
+
+## Q9
+
+Return the title of the course with the largest enrollment.
+
+```xquery
+for $c in doc("courses.xml")//Course
+where $c/@Enrollment >= max(for $cc in doc("courses.xml")//Course return $cc/@Enrollment)
+return $c/Title
+```
