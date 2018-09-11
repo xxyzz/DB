@@ -112,3 +112,13 @@ for $c in doc("courses.xml")//Course[Title = preceding::*/Title
     or Title = following::*/Title ]
 return $c/data(@Number)
 ```
+
+## Q3
+
+Return course numbers of courses taught by an instructor with first name "Daphne" or "Julie".
+
+```xquery
+for $c in doc("courses.xml")//Course
+where $c/Instructors//First_Name = "Daphne" or $c/Instructors//First_Name = "Julie"
+return $c/data(@Number)
+```
