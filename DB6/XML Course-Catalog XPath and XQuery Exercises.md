@@ -198,3 +198,65 @@ return
 	}
     </Summary>
 ```
+
+## Q10
+
+Return a "Professors" element that contains as subelements a listing of all professors in all departments, sorted by last name with each professor appearing once. The "Professor" subelements should have the same structure as in the original data. For this question, you may assume that all professors have distinct last names. Watch out -- the presence/absence of middle initials may require some special handling. (This problem is quite challenging; congratulations if you get it right.)
+
+```xquery
+let $p1 := doc("courses.xml")//Professor
+let $p2 := (
+	$p1 except (
+		for $p3 in $p1
+		where ($p3/Last_Name = $p3/following::*/Last_Name and $p3/First_Name = $p3/following::*/First_Name)
+		return $p3
+	)
+)
+return 
+    <Professors>
+    {
+        for $p in $p2
+        order by $p//Last_Name 
+        return $p
+    }
+    </Professors>
+```
+
+## Q11
+
+Expanding on the previous question, create an inverted course listing: Return an "Inverted_Course_Catalog" element that contains as subelements professors together with the courses they teach, sorted by last name. You may still assume that all professors have distinct last names. The "Professor" subelements should have the same structure as in the original data, with an additional single "Courses" subelement under Professor, containing a further "Course" subelement for each course number taught by that professor. Professors who do not teach any courses should have no Courses subelement at all. (This problem is very challenging; extra congratulations if you get it right.)
+
+```xquery
+let $professors := doc("courses.xml")//Professor
+let $courses := doc("courses.xml")//Course
+
+let $distinctProfessors := (
+      $professors except (
+        for $p in $professors
+          where ($p/Last_Name = $p/following::*/Last_Name and $p/First_Name = $p/following::*/First_Name)
+          return $p
+      )
+    )
+
+return <Inverted_Course_Catalog>
+  {
+    for $p in $distinctProfessors
+      order by $p/Last_Name
+      return <Professor>
+      { $p/* }
+      {
+        if ($courses//Professor = $p) 
+        then (
+          <Courses> {
+            for $c in $courses
+            where $c//Professor = $p
+            return <Course> { $c/data(@Number) } </Course>
+          }
+          </Courses>
+        )
+        else ( )
+      }
+      </Professor>
+  }
+</Inverted_Course_Catalog>
+```
