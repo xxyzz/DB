@@ -2,6 +2,8 @@
 
 In these exercises, you will be working with a small XML data set drawn from the Stanford course catalog. There are multiple departments, each with a department chair, some courses, and professors and/or lecturers who teach courses. The XML data is [here](https://prod-c2g.s3.amazonaws.com/db/Winter2013/files/courses-noID.xml).
 
+[Download Kernow](https://sourceforge.net/projects/kernowforsaxon/files/latest/download)
+
 ## Q1
 
 Return all Title elements (of both departments and courses).
@@ -56,4 +58,14 @@ Return the count of courses that have a cross-listed course (i.e., that have "Cr
 
 ```xquery
 count(doc("courses.xml")//Course[contains(Description, "Cross-listed")])
+```
+
+## Q7
+
+Return the average enrollment of all courses in the CS department.
+
+```xquery
+for $d in doc("courses.xml")//Department
+where $d/@Code = "CS"
+return avg($d/Course/@Enrollment)
 ```
