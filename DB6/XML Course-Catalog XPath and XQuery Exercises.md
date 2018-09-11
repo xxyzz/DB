@@ -170,3 +170,15 @@ for $c2 in (
 where $c2//Professor/Last_Name = "Ng"
 return $c2/Title
 ```
+
+## Q8
+
+Return course numbers of courses that have a course taught by Eric Roberts as a prerequisite.
+
+```xquery
+for $c in doc("courses.xml")//Course
+where $c//Prereq = (for $er in doc("courses.xml")//Course
+                    where $er//First_Name = "Eric" and $er//Last_Name = "Roberts"
+                    return $er/data(@Number))
+return $c/data(@Number)
+```
