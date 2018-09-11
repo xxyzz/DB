@@ -69,3 +69,14 @@ for $d in doc("courses.xml")//Department
 where $d/@Code = "CS"
 return avg($d/Course/@Enrollment)
 ```
+
+## Q8
+
+Return last names of instructors teaching at least one course that has "system" in its description and enrollment greater than 100.
+
+```xquery
+for $c in doc("courses.xml")//Course
+where $c[contains(Description, "system")]
+    and $c/@Enrollment > 100
+return $c//Last_Name
+```
