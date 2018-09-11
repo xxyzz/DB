@@ -147,3 +147,13 @@ for $c in doc("courses.xml")//Course
 where $c//Last_Name = (for $chair in doc("courses.xml")//Chair return $chair//Last_Name)
 return $c/Title
 ```
+
+## Q6
+
+Return titles of courses that have both a lecturer and a professor as instructors. Return each title only once.
+
+```xquery
+for $c in doc("courses.xml")//Course
+where $c/Instructors[Lecturer] and $c/Instructors[Professor]
+return $c/Title
+```
