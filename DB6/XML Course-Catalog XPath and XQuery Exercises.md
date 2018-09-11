@@ -157,3 +157,16 @@ for $c in doc("courses.xml")//Course
 where $c/Instructors[Lecturer] and $c/Instructors[Professor]
 return $c/Title
 ```
+
+## Q7
+
+Return titles of courses taught by a professor with the last name "Ng" but not by a professor with the last name "Thrun".
+
+```xquery
+for $c2 in (
+    for $c1 in doc("courses.xml")//Course
+    where every $ln in $c1//Professor/Last_Name satisfies $ln != "Thrun"
+    return $c1)
+where $c2//Professor/Last_Name = "Ng"
+return $c2/Title
+```
