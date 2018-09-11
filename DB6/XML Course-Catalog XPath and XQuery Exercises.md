@@ -182,3 +182,19 @@ where $c//Prereq = (for $er in doc("courses.xml")//Course
                     return $er/data(@Number))
 return $c/data(@Number)
 ```
+
+## Q9
+
+Create a summary of CS classes: List all CS department courses in order of enrollment. For each course include only its Enrollment (as an attribute) and its Title (as a subelement).
+
+```xquery
+let $c1 := doc("courses.xml")//Department[@Code = "CS"]/Course
+return 
+    <Summary>
+	{
+		for $c2 in $c1
+		order by xs:int($c2/@Enrollment)
+		return <Course Enrollment = "{ $c2/data(@Enrollment) }">{ $c2/Title }</Course>
+	}
+    </Summary>
+```
