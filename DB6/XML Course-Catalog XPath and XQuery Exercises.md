@@ -87,7 +87,7 @@ Return the title of the course with the largest enrollment.
 
 ```xquery
 for $c in doc("courses.xml")//Course
-where $c/@Enrollment >= max(for $cc in doc("courses.xml")//Course return $cc/@Enrollment)
+where $c/@Enrollment >= max(for $cc in doc("courses.xml")//Course return $cc/data(@Enrollment))
 return $c/Title
 ```
 
@@ -100,5 +100,15 @@ Return the course number of the course that is cross-listed as "LING180".
 ```xquery
 for $c in doc("courses.xml")//Course
 where $c[contains(Description, "Cross-listed as LING180")]
+return $c/data(@Number)
+```
+
+## Q2
+
+Return course numbers of courses that have the same title as some other course. (Hint: You might want to use the "preceding" and "following" navigation axes for this query, which were not covered in the video or our demo script; they match any preceding or following node, not just siblings.)
+
+```xquery
+for $c in doc("courses.xml")//Course[Title = preceding::*/Title
+    or Title = following::*/Title ]
 return $c/data(@Number)
 ```
