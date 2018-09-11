@@ -137,3 +137,13 @@ count(
             $c
 )
 ```
+
+## Q5
+
+Return titles of courses taught by the chair of a department. For this question, you may assume that all professors have distinct last names.
+
+```xquery
+for $c in doc("courses.xml")//Course
+where $c//Last_Name = (for $chair in doc("courses.xml")//Chair return $chair//Last_Name)
+return $c/Title
+```
