@@ -358,3 +358,62 @@ return
         }
     </country>
 ```
+
+## Q21
+
+Find all situations where one country's most popular language is another country's least popular, and both countries list more than one language. (Hint: You may need to explicitly cast percentages as floating-point numbers with xs:float() to get the correct answer.) Return the name of the language and the two countries, each in the format:
+
+```xml
+<LangPair language="lang-name">
+  <MostPopular>country-name</MostPopular>
+  <LeastPopular>country-name</LeastPopular>
+</LangPair>
+```
+
+```xquery
+for $l1 in doc("countries.xml")//country[count(language) > 1]/language
+for $l2 in doc("countries.xml")//country[count(language) > 1]/language
+where data($l1) = data($l2) and xs:float($l1/@percentage) = xs:float(max($l1/parent::country/language/@percentage)) and xs:float($l2/@percentage) = xs:float(min($l2/parent::country/language/@percentage))
+return
+    <LangPair language="{ data($l1) }">
+        <MostPopular>{ $l1/parent::country/data(@name) }</MostPopular>
+        <LeastPopular>{ $l2/parent::country/data(@name) }</LeastPopular>
+    </LangPair>
+```
+
+## Q22
+
+For each language spoken in one or more countries, create a "language" element with a "name" attribute and one "country" subelement for each country in which the language is spoken. The "country" subelements should have two attributes: the country "name", and "speakers" containing the number of speakers of that language (based on language percentage and the country's population). Order the result by language name, and enclose the entire list in a single "languages" element. For example, your result might look like:
+
+```xml
+<languages>
+  ...
+  <language name="Arabic">
+    <country name="Iran" speakers="660942"/>
+    <country name="Saudi Arabia" speakers="19409058"/>
+    <country name="Yemen" speakers="13483178"/>
+  </language>
+  ...
+</languages>
+```
+
+```xquery
+let $languages := doc("countries.xml")//language
+let $languageNames := distinct-values(doc("countries.xml")//data(language))
+return
+    <languages>
+    {
+        for $ln in $languageNames
+        order by $ln
+        return
+            <language name="{ $ln }">
+            {
+                for $cl in $languages
+                where $ln = data($cl)
+                return
+                    <country name="{ $cl/parent::country/data(@name) }" speakers="{ xs:int($cl/parent::country/@population * $cl/@percentage div 100) }" />
+            }
+            </language>
+    }
+    </languages>
+```
