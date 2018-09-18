@@ -103,3 +103,108 @@ return
         <lowest density = "{ $lo/data(@population div @area) }"> { $lo/data(@name) } </lowest>
     </result>
 ```
+
+# XML World-Countries XPath and XQuery Exercises Extras
+
+## Q1
+
+Return the names of all countries with population greater than 100 million.
+
+```xquery
+for $c in doc("countries.xml")//country
+where $c/@population > 100000000
+return $c/data(@name)
+```
+
+## Q2
+
+Return the names of all countries where over 50% of the population speaks German. (Hint: Depending on your solution, you may want to use ".", which refers to the "current element" within an XPath expression.)
+
+```xquery
+for $language in doc("countries.xml")//language
+where $language = "German" and $language/@percentage > 50
+return $language/parent::country/data(@name)
+```
+
+## Q3
+
+Return the names of all countries where a city in that country contains more than one-third of the country's population.
+
+```xquery
+let $countries := doc("countries.xml")//country
+for $country in $countries
+for $city in $country/city
+where $city/population * 3 > $country/@population
+return $country/data(@name)
+```
+
+## Q4
+
+Return the population density of Qatar. Note: Since the "/" operator has its own meaning in XPath and XQuery, the division operator is "div". To compute population density use "(@population div @area)".
+
+```xquery
+let $q := doc("countries.xml")//country[@name = "Qatar"]
+return $q/data(@population) div $q/data(@area)
+```
+
+## Q5
+
+Return the names of all countries whose population is less than one thousandth that of some city (in any country).
+
+```xquery
+let $counries := doc("countries.xml")//country
+let $cities := doc("countries.xml")//city
+for $country in $countires
+for $city in $cities
+where $contry/@population + 1000 < $city/population
+return $country/data(@name)
+```
+
+## Q6
+
+Return all city names that appear more than once, i.e., there is more than one city with that name in the data. Return only one instance of each such city name. (Hint: You might want to use the "preceding" and/or "following" navigation axes for this query, which were not covered in the video or our demo script; they match any preceding or following node, not just siblings.)
+
+```xquery
+for $c in doc("countries.xml")//city[name = preceding::name]
+return $c/name
+```
+
+## Q7
+
+Return the names of all countries containing a city such that some other country has a city of the same name. (Hint: You might want to use the "preceding" and/or "following" navigation axes for this query, which were not covered in the video or our demo script; they match any preceding or following node, not just siblings.)
+
+```xquery
+for $c in doc("countries.xml")//country
+where $c/city/name = $c/preceding::city/name or $c/city/name = $c/following::city/name
+return $c/data(@name)
+```
+
+## Q8
+
+Return the names of all countries whose name textually contains a language spoken in that country. For instance, Uzbek is spoken in Uzbekistan, so return Uzbekistan. (Hint: You may want to use ".", which refers to the "current element" within an XPath expression.)
+
+```xquery
+for $country in doc("countries.xml")//country
+where some $language in $country/language satisfies $country[contains(@name, $language)]
+return $country/data(@name)
+```
+
+## Q9
+
+Return the names of all countries in which people speak a language whose name textually contains the name of the country. For instance, Japanese is spoken in Japan, so return Japan. (Hint: You may want to use ".", which refers to the "current element" within an XPath expression.)
+
+```xquery
+for $country in doc("countries.xml")//country
+where some $language in $country/language satisfies $language[contains(., $country/@name)]
+return $country/data(@name)
+```
+
+## Q10
+
+Return all languages spoken in a country whose name textually contains the language name. For instance, German is spoken in Germany, so return German. (Hint: Depending on your solution, may want to use data(.), which returns the text value of the "current element" within an XPath expression.)
+
+```xquery
+for $language in doc("countries.xml")//language
+where contains($language/parent::country/@name, $language)
+return $language/data(.)
+```
