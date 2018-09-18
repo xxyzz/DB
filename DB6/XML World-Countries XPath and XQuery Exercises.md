@@ -1,5 +1,7 @@
 # XML World-Countries XPath and XQuery Exercises
 
+The XML data is [here](https://prod-c2g.s3.amazonaws.com/db/Winter2013/files/countries.xml).
+
 ## Q1
 
 Return the area of Mongolia.
@@ -207,4 +209,152 @@ Return all languages spoken in a country whose name textually contains the langu
 for $language in doc("countries.xml")//language
 where contains($language/parent::country/@name, $language)
 return $language/data(.)
+```
+
+## Q11
+
+Return all languages whose name textually contains the name of a country in which the language is spoken. For instance, Icelandic is spoken in Iceland, so return Icelandic. (Hint: Depending on your solution, may want to use data(.), which returns the text value of the "current element" within an XPath expression.)
+
+```xquery
+for $language in doc("countries.xml")//language
+where contains($language, $language/parent::country/@name)
+return $language/data(.)
+```
+
+## Q12
+
+Return the number of countries where Russian is spoken.
+
+```xquery
+count(doc("countries.xml")//country[language = "Russian"])
+```
+
+## Q13
+
+Return the names of all countries for which the data does not include any languages or cities, but the country has more than 10 million people.
+
+```xquery
+for $c in doc("countries.xml")//country
+return
+    if ($c[language] or $c[city]) then
+    ()
+    else
+        if ($c/@population > 10000000) then
+        (
+            $c/data(@name)
+        )
+        else ()
+```
+
+## Q14
+
+Return the name of the country with the highest population. (Hint: You may need to explicitly cast population numbers as integers with xs:int() to get the correct answer.)
+
+```xquery
+for $c in doc("countries.xml")//country
+where $c/@population = max(doc("countries.xml")//country/@population)
+return $c/data(@name)
+```
+
+## Q15
+
+Return the name of the country that has the city with the highest population. (Hint: You may need to explicitly cast population numbers as integers with xs:int() to get the correct answer.)
+
+```xquery
+for $c in doc("countries.xml")//city
+where $c/population = max(doc("countries.xml")//city/population)
+return $c/parent::country/data(@name)
+```
+
+## Q16
+
+Return the average number of languages spoken in countries where Russian is spoken.
+
+```xquery
+avg(
+    for $c in doc("countries.xml")//country[language = "Russian"]
+    return count($c/language)
+)
+```
+
+## Q17
+
+Return all country-language pairs where the language is spoken in the country and the name of the country textually contains the language name. Return each pair as a country element with language attribute, e.g.,
+
+```xml
+<country language="French">French Guiana</country>
+```
+
+```xquery
+for $c in doc("countries.xml")//country
+for $l in $c/language
+where contains($c/@name, $l)
+return
+    <country language="{ $l }">
+    {
+        $c/data(@name)
+    }
+    </country>
+```
+
+## Q18
+
+Return all countries that have at least one city with population greater than 7 million. For each one, return the country name along with the cities greater than 7 million, in the format:
+
+```xml
+<country name="country-name">
+  <big>city-name</big>
+  <big>city-name</big>
+  ...
+</country>
+```
+
+```xquery
+for $country in doc("countries.xml")//country
+where some $c in $country/city satisfies $c/population > 7000000
+return
+    <country name="{ $country/data(@name) }">
+    {
+        for $city in $country/city
+        where $city/population > 7000000
+        return
+            <big>
+                { data($city/name) }
+            </big>
+    }
+    </country>
+```
+
+## Q19
+
+Return all countries where at least one language is listed, but the total percentage for all listed languages is less than 90%. Return the country element with its name attribute and its language subelements, but no other attributes or subelements.
+
+```xquery
+for $c in doc("countries.xml")//country
+where $c[language] and (sum($c/language/@percentage) < 90)
+return
+    <country name="{ $c/data(@name) }">
+        {
+            for $l in $c/language
+            return $l
+        }
+    </country>
+```
+
+## Q20
+
+Return all countries where at least one language is listed, and every listed language is spoken by less than 20% of the population. Return the country element with its name attribute and its language subelements, but no other attributes or subelements.
+
+```xquery
+for $c in doc("countries.xml")//country
+where $c[language] and not (
+    $c/language/@percentage >= 20
+)
+return
+    <country name="{ $c/data(@name) }">
+        {
+            for $l in $c/language
+            return $l
+        }
+    </country>
 ```
