@@ -3,5 +3,6 @@ pizza.sql
 rating.sql
 social.sql
 sample*
+*.txt
 .DS_Store
 courses-noID.xml
