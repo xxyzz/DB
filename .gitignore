@@ -6,3 +6,4 @@ sample*
 *.txt
 .DS_Store
 courses-noID.xml
+Triggers*.sql
