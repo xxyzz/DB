@@ -7,3 +7,4 @@ sample*
 .DS_Store
 courses-noID.xml
 Triggers*.sql
+DB12/ViewsModTriggers.sql
