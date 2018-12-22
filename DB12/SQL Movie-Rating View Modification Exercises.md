@@ -135,3 +135,52 @@ BEGIN
     WHERE mID = Old.mID;
 END;
 ```
+
+## Q5
+
+Write an instead-of trigger that enables deletions from view **HighlyRated**.
+
+**Policy**: Deletions from view HighlyRated should delete all ratings for the corresponding movie that have stars > 3.
+
+```sql
+CREATE TRIGGER DeleteHighlyRated
+INSTEAD OF DELETE ON HighlyRated
+FOR EACH ROW
+BEGIN
+    DELETE FROM Rating
+    WHERE mID = Old.mID AND stars > 3;
+END;
+```
+
+## Q6
+
+Write an instead-of trigger that enables deletions from view **HighlyRated**.
+
+**Policy**: Deletions from view HighlyRated should update all ratings for the corresponding movie that have stars > 3 so they have stars = 3.
+
+```sql
+CREATE TRIGGER DeleteHighlyRated
+INSTEAD OF DELETE ON HighlyRated
+FOR EACH ROW
+BEGIN
+    UPDATE Rating
+    SET stars = 3
+    WHERE mID = Old.mID AND stars > 3;
+END;
+```
+
+## Q7
+
+Write an instead-of trigger that enables insertions into view **HighlyRated**.
+
+**Policy**: An insertion should be accepted only when the (mID,title) pair already exists in the Movie table. (Otherwise, do nothing.) Insertions into view HighlyRated should add a new rating for the inserted movie with rID = 201, stars = 5, and NULL ratingDate.
+
+```sql
+CREATE TRIGGER InsertHighlyRated
+INSTEAD OF INSERT ON HighlyRated
+FOR EACH ROW
+WHEN EXISTS (SELECT * FROM Movie WHERE mID = New.mID AND title = New.title)
+BEGIN
+    INSERT INTO Rating VALUES (201, New.mID, 5, NULL);
+END;
+```
