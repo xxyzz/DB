@@ -184,3 +184,51 @@ BEGIN
     INSERT INTO Rating VALUES (201, New.mID, 5, NULL);
 END;
 ```
+
+## Q8
+
+Write an instead-of trigger that enables insertions into view **NoRating**.
+
+**Policy**: An insertion should be accepted only when the (mID,title) pair already exists in the Movie table. (Otherwise, do nothing.) Insertions into view NoRating should delete all ratings for the corresponding movie.
+
+```sql
+CREATE TRIGGER InsertNoRating
+INSTEAD OF INSERT ON NoRating
+FOR EACH ROW
+WHEN EXISTS (SELECT * FROM Movie WHERE mID = New.mID AND title = New.title)
+BEGIN
+    DELETE FROM Rating
+    WHERE mID = New.mID;
+END;
+```
+
+## Q9
+
+Write an instead-of trigger that enables deletions from view **NoRating**.
+
+**Policy**: Deletions from view NoRating should delete the corresponding movie from the Movie table.
+
+```sql
+CREATE TRIGGER DeleteNoRating
+INSTEAD OF DELETE ON NoRating
+FOR EACH ROW
+BEGIN
+    DELETE FROM Movie
+    WHERE mID = Old.mID;
+END;
+```
+
+## Q10
+
+Write an instead-of trigger that enables deletions from view **NoRating**.
+
+**Policy**: Deletions from view NoRating should add a new rating for the deleted movie with rID = 201, stars = 1, and NULL ratingDate.
+
+```sql
+CREATE TRIGGER DeleteNoRating
+INSTEAD OF DELETE ON NoRating
+FOR EACH ROW
+BEGIN
+    INSERT INTO Rating VALUES (201, Old.mID, 1, NULL);
+END;
+```
