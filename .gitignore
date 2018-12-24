@@ -1,10 +1,6 @@
 Bookstore*
-pizza.sql
-rating.sql
-social.sql
+*.sql
 sample*
 *.txt
 .DS_Store
-courses-noID.xml
-Triggers*.sql
-DB12/ViewsModTriggers.sql
+DB6/*.xml
