@@ -167,13 +167,12 @@ ORDER BY name, title;
 Find the titles of all movies not reviewed by Chris Jackson.
 
 ```sql
-SELECT title
-FROM (SELECT title FROM Movie
-      WHERE mID NOT IN (
-          SELECT mID
-          FROM Rating JOIN Reviewer USING(rID)
-          WHERE name = 'Chris Jackson'
-     ));
+SELECT title FROM Movie
+WHERE mID NOT IN (
+    SELECT mID
+    FROM Rating JOIN Reviewer USING(rID)
+    WHERE name = 'Chris Jackson'
+);
 ```
 
 ## Q5
@@ -181,14 +180,10 @@ FROM (SELECT title FROM Movie
 For all pairs of reviewers such that both reviewers gave a rating to the same movie, return the names of both reviewers. Eliminate duplicates, don't pair reviewers with themselves, and include each pair only once. For each pair, return the names in the pair in alphabetical order.
 
 ```sql
-SELECT DISTINCT *
-FROM (
-    SELECT R1.name AS R1, R2.name AS R2
-    FROM (Reviewer JOIN Rating USING(rID)) AS R1, (Reviewer JOIN Rating USING(rID)) AS R2
-    WHERE R1.rID <> R2.rID AND R1.mID = R2.mID
-)
-WHERE R1 < R2
-ORDER BY R1;
+SELECT DISTINCT R1.name, R2.name
+FROM (Reviewer JOIN Rating USING(rID)) AS R1, (Reviewer JOIN Rating USING(rID)) AS R2
+WHERE R1.rID <> R2.rID AND R1.mID = R2.mID AND R1.name < R2.name
+ORDER BY R1.name;
 ```
 
 ## Q6
@@ -239,8 +234,8 @@ Some directors directed more than one movie. For all such directors, return the 
 
 ```sql
 SELECT M1.title, M1.director
-FROM Movie M1, Movie M2
-WHERE M1.director = M2.director AND M1.mId <> M2.mID
+FROM Movie M1 JOIN Movie M2 USING(director)
+WHERE M1.mID <> M2.mID
 ORDER BY M1.director, M1.title;
 
 SELECT title, director
